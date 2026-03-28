@@ -17,3 +17,10 @@ def add_sheep(sheep: Sheep):
         raise HTTPException(status_code=400, detail="Sheep with this ID already exists")
     db.data[sheep.id] = sheep
     return sheep
+
+@app.put("/sheep/{id}", response_model=Sheep)
+def update_sheep(id: int, sheep: Sheep):
+    updated = db.update_sheep(id, sheep)
+    if updated is None:
+        raise HTTPException(status_code=404, detail="Sheep not found")
+    return updated
